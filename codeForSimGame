@@ -2,20 +2,18 @@ import java.util.*;
 
 public class Main {
 
-    // 【■ DATA ABSTRACTION: list storing player stats】
-    // stats[0] = grades, stats[1] = energy, stats[2] = popularity
-    static int[] stats = {70, 80, 50};
+    static int[] stats = {70, 80, 50}; // ■ Data abstraction
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
         System.out.println("===== HIGH SCHOOL SIMULATOR =====");
-        System.out.println("You're a student trying to survive the semester!");
-        System.out.println("Your starting stats → Grades: 70 | Energy: 80 | Popularity: 50\n");
+        System.out.println("Survive the semester and build your stats!\n");
 
         boolean playing = true;
 
         while (playing) {
+
             System.out.println("Choose an activity:");
             System.out.println("1 = Study");
             System.out.println("2 = Sports Practice");
@@ -24,7 +22,8 @@ public class Main {
             System.out.println("5 = Quit");
             System.out.print("Enter choice: ");
 
-            int choice = input.nextInt();
+            int choice = safeIntInput(input);  // ← ✔ FIXED INPUT
+
             System.out.println();
 
             if (choice == 1) {
@@ -33,7 +32,7 @@ public class Main {
 
             } else if (choice == 2) {
                 updateStats("sports", stats);
-                System.out.println("You hit sports practice! 🏀");
+                System.out.println("You dominated sports practice! 🏀");
 
             } else if (choice == 3) {
                 updateStats("sleep", stats);
@@ -47,7 +46,7 @@ public class Main {
                 break;
 
             } else {
-                System.out.println("Invalid choice.");
+                System.out.println("Invalid choice. Try again.");
             }
 
             printStats();
@@ -58,70 +57,80 @@ public class Main {
         input.close();
     }
 
-    // ============================================================
-    // 【● ALGORITHM with math + logical operators (AP CSP requirement)】
-    // updateStats controls how activities change stats.
-    // Includes: +, -, >, <, ==, logic, and bounds checking.
-    // ============================================================
-
+    // ---------------------------------------------------------
+    // ● ALGORITHM with math + logical operators
+    // ---------------------------------------------------------
     public static void updateStats(String activity, int[] stats) {
 
         if (activity.equals("study")) {
-            stats[0] += 10;     // grades go up
-            stats[1] -= 5;      // energy goes down
-        } 
-        else if (activity.equals("sports")) {
-            stats[2] += 10;     // popularity up
-            stats[1] -= 10;     // energy down
-        } 
-        else if (activity.equals("sleep")) {
-            stats[1] += 15;     // energy up
+            stats[0] += 10;
+            stats[1] -= 5;
+
+        } else if (activity.equals("sports")) {
+            stats[2] += 10;
+            stats[1] -= 10;
+
+        } else if (activity.equals("sleep")) {
+            stats[1] += 15;
         }
 
-        // Bound the values — algorithmic logic
-        if (stats[0] > 100) stats[0] = 100;
-        if (stats[1] > 100) stats[1] = 100;
-        if (stats[2] > 100) stats[2] = 100;
-        if (stats[0] < 0) stats[0] = 0;
-        if (stats[1] < 0) stats[1] = 0;
-        if (stats[2] < 0) stats[2] = 0;
+        // Keep in 0–100 range (logic + math)
+        for (int i = 0; i < stats.length; i++) {
+            if (stats[i] > 100) stats[i] = 100;
+            if (stats[i] < 0) stats[i] = 0;
+        }
     }
 
-    // ============================================================
-    // UNIQUE FEATURE: Random events (AP CSP safe)
-    // ============================================================
-
+    // ---------------------------------------------------------
+    // Random event feature
+    // ---------------------------------------------------------
     public static void randomEvent(int[] stats) {
         Random r = new Random();
         int eventNum = r.nextInt(3);
 
         if (eventNum == 0) {
-            System.out.println("🎉 POP QUIZ… and you surprisingly aced it!");
+            System.out.println("🎉 Pop quiz — and you surprisingly Aced it!");
             stats[0] += 5;
+
         } else if (eventNum == 1) {
-            System.out.println("😩 You got caught in drama… energy drained.");
+            System.out.println("😩 Drama in the hallway drained your energy.");
             stats[1] -= 10;
+
         } else {
-            System.out.println("🔥 Someone hyped you up in the hallway! Popularity boosted.");
+            System.out.println("🔥 Someone hyped you up in class — popularity boost!");
             stats[2] += 7;
         }
 
-        // Keep stats in range
-        if (stats[0] > 100) stats[0] = 100;
-        if (stats[1] > 100) stats[1] = 100;
-        if (stats[2] > 100) stats[2] = 100;
-        if (stats[0] < 0) stats[0] = 0;
-        if (stats[1] < 0) stats[1] = 0;
-        if (stats[2] < 0) stats[2] = 0;
+        // Bound values
+        for (int i = 0; i < stats.length; i++) {
+            if (stats[i] > 100) stats[i] = 100;
+            if (stats[i] < 0) stats[i] = 0;
+        }
     }
 
-    // ============================================================
-    // Print stats neatly
-    // ============================================================
+    // ---------------------------------------------------------
+    // SAFE INPUT FUNCTION (fix for InputMismatchException)
+    // ---------------------------------------------------------
+    public static int safeIntInput(Scanner input) {
+        while (true) {
+            try {
+                String line = input.nextLine().trim();
+                return Integer.parseInt(line);
+            } catch (Exception e) {
+                System.out.print("Please enter a number: ");
+            }
+        }
+    }
 
+    // ---------------------------------------------------------
+    // Print stats neatly
+    // ---------------------------------------------------------
     public static void printStats() {
         System.out.println("Current Stats → Grades: " + stats[0] +
-                           " | Energy: " + stats[1] +
-                           " | Popularity: " + stats[2]);
+                " | Energy: " + stats[1] +
+                " | Popularity: " + stats[2]);
     }
 }
+
+
+   
