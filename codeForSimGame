@@ -1,0 +1,127 @@
+import java.util.*;
+
+public class Main {
+
+    // 【■ DATA ABSTRACTION: list storing player stats】
+    // stats[0] = grades, stats[1] = energy, stats[2] = popularity
+    static int[] stats = {70, 80, 50};
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("===== HIGH SCHOOL SIMULATOR =====");
+        System.out.println("You're a student trying to survive the semester!");
+        System.out.println("Your starting stats → Grades: 70 | Energy: 80 | Popularity: 50\n");
+
+        boolean playing = true;
+
+        while (playing) {
+            System.out.println("Choose an activity:");
+            System.out.println("1 = Study");
+            System.out.println("2 = Sports Practice");
+            System.out.println("3 = Sleep");
+            System.out.println("4 = Random Event");
+            System.out.println("5 = Quit");
+            System.out.print("Enter choice: ");
+
+            int choice = input.nextInt();
+            System.out.println();
+
+            if (choice == 1) {
+                updateStats("study", stats);
+                System.out.println("You studied hard! 📚");
+
+            } else if (choice == 2) {
+                updateStats("sports", stats);
+                System.out.println("You hit sports practice! 🏀");
+
+            } else if (choice == 3) {
+                updateStats("sleep", stats);
+                System.out.println("You got some rest 😴");
+
+            } else if (choice == 4) {
+                randomEvent(stats);
+
+            } else if (choice == 5) {
+                playing = false;
+                break;
+
+            } else {
+                System.out.println("Invalid choice.");
+            }
+
+            printStats();
+            System.out.println("---------------------------");
+        }
+
+        System.out.println("Game over — thanks for playing!");
+        input.close();
+    }
+
+    // ============================================================
+    // 【● ALGORITHM with math + logical operators (AP CSP requirement)】
+    // updateStats controls how activities change stats.
+    // Includes: +, -, >, <, ==, logic, and bounds checking.
+    // ============================================================
+
+    public static void updateStats(String activity, int[] stats) {
+
+        if (activity.equals("study")) {
+            stats[0] += 10;     // grades go up
+            stats[1] -= 5;      // energy goes down
+        } 
+        else if (activity.equals("sports")) {
+            stats[2] += 10;     // popularity up
+            stats[1] -= 10;     // energy down
+        } 
+        else if (activity.equals("sleep")) {
+            stats[1] += 15;     // energy up
+        }
+
+        // Bound the values — algorithmic logic
+        if (stats[0] > 100) stats[0] = 100;
+        if (stats[1] > 100) stats[1] = 100;
+        if (stats[2] > 100) stats[2] = 100;
+        if (stats[0] < 0) stats[0] = 0;
+        if (stats[1] < 0) stats[1] = 0;
+        if (stats[2] < 0) stats[2] = 0;
+    }
+
+    // ============================================================
+    // UNIQUE FEATURE: Random events (AP CSP safe)
+    // ============================================================
+
+    public static void randomEvent(int[] stats) {
+        Random r = new Random();
+        int eventNum = r.nextInt(3);
+
+        if (eventNum == 0) {
+            System.out.println("🎉 POP QUIZ… and you surprisingly aced it!");
+            stats[0] += 5;
+        } else if (eventNum == 1) {
+            System.out.println("😩 You got caught in drama… energy drained.");
+            stats[1] -= 10;
+        } else {
+            System.out.println("🔥 Someone hyped you up in the hallway! Popularity boosted.");
+            stats[2] += 7;
+        }
+
+        // Keep stats in range
+        if (stats[0] > 100) stats[0] = 100;
+        if (stats[1] > 100) stats[1] = 100;
+        if (stats[2] > 100) stats[2] = 100;
+        if (stats[0] < 0) stats[0] = 0;
+        if (stats[1] < 0) stats[1] = 0;
+        if (stats[2] < 0) stats[2] = 0;
+    }
+
+    // ============================================================
+    // Print stats neatly
+    // ============================================================
+
+    public static void printStats() {
+        System.out.println("Current Stats → Grades: " + stats[0] +
+                           " | Energy: " + stats[1] +
+                           " | Popularity: " + stats[2]);
+    }
+}
