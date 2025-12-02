@@ -109,7 +109,7 @@ public class Main {
     }
 
     // ---------------------------------------------------------
-    // SAFE INPUT FUNCTION (fix for InputMismatchException)
+    // SAFE INPUT FUNCTION 
     // ---------------------------------------------------------
     public static int safeIntInput(Scanner input) {
         while (true) {
