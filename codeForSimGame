@@ -22,7 +22,7 @@ public class Main {
             System.out.println("5 = Quit");
             System.out.print("Enter choice: ");
 
-            int choice = safeIntInput(input);  // ← ✔ FIXED INPUT
+            int choice = safeIntInput(input);  
 
             System.out.println();
 
